@@ -92,6 +92,7 @@ Load other references on demand:
 - `references/touch-gesture-motion.md` — gestures, touch targets, transitions, haptics, feel
 - `references/content-and-attention.md` — content prioritization, scanning, glanceability, overlays
 - `references/design-forks.md` — when a choice has multiple valid answers
+- `references/output-format.md` — presenting Audit findings (HTML report by default; adapt `references/report-template.html`)
 
 ---
 
@@ -134,6 +135,8 @@ For the reasoning behind each and the lens that catches it, see `references/desi
 | [touch-gesture-motion.md](references/touch-gesture-motion.md) | Touch targets, gesture discoverability, motion as communication, haptics | Gestures, transitions, or feel |
 | [content-and-attention.md](references/content-and-attention.md) | Prioritization, scanning patterns, glanceability, overlay proliferation | Content layout and hierarchy |
 | [design-forks.md](references/design-forks.md) | Ambiguous mobile decisions with options and tradeoffs | A choice has no single right answer |
+| [output-format.md](references/output-format.md) | How the Audit presents findings — HTML report (default) + terminal fallback; color/diagram/section rules | Presenting audit findings (Step 5) |
+| [report-template.html](references/report-template.html) | The canonical self-contained HTML audit report (worked example) — adapt, don't reinvent | Writing the HTML report |
 
 ## Workflow Index
 

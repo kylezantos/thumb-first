@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Skillet — Mobile Design Audit · thumb-first</title>
+
+<!--
+  ════════════════════════════════════════════════════════════════════
+  thumb-first AUDIT REPORT — reference template (worked example: "Skillet")
+  ════════════════════════════════════════════════════════════════════
+  This is the canonical HTML report for the thumb-first audit skill.
+  Self-contained: one file, no local asset dependencies. Fonts load from
+  a CDN with a robust fallback stack and degrade gracefully offline.
+
+  COLOR CHANNELS — keep them separate (this is the whole point):
+    • Fixed identity .... warm-graphite + chalk. Carries NO meaning.
+    • --accent .......... ONE color sampled from the audited product.
+                          Brand chrome only (eyebrow tick, section
+                          numerals, links, recommended-fork ring).
+                          NEVER used for severity, reach, or verdicts.
+    • Severity .......... fixed: --crit / --imp / --pol. Never adaptive.
+    • Reach ramp ........ fixed: --reach-low/med/high. Diagram only.
+    • Verdict chips ..... fixed: strong / concern / problem / mixed.
+
+  MODULAR SECTIONS — render a section ONLY if the audit produced it.
+  A single-screen audit may have no fork section and no per-screen grid;
+  delete those <section> blocks. The visual system never changes.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* ——— Fixed identity: warm graphite + chalk (achromatic) ——— */
+    --ink:        oklch(0.165 0.006 75);
+    --surface:    oklch(0.205 0.006 75);
+    --surface-2:  oklch(0.245 0.007 75);
+    --paper:      oklch(0.935 0.005 85);
+    --paper-dim:  oklch(0.795 0.006 85);
+    --muted:      oklch(0.620 0.008 85);
+    --faint:      oklch(0.500 0.008 85);
+    --line:       oklch(0.95 0.01 85 / 0.09);
+    --line-strong:oklch(0.95 0.01 85 / 0.16);
+
+    /* ——— Adaptive accent: SAMPLED FROM THE AUDITED PRODUCT ———
+       Worked example = Skillet's terracotta. Swap these three for each audit.
+       Brand chrome only — never a semantic color. */
+    --accent:      oklch(0.63 0.115 45);
+    --accent-soft: oklch(0.71 0.10 50);
+    --accent-tint: oklch(0.66 0.155 52 / 0.14);
+
+    /* ——— Severity (FIXED — never adaptive) ——— */
+    --crit:      oklch(0.655 0.185 25);
+    --crit-tint: oklch(0.655 0.185 25 / 0.15);
+    --imp:       oklch(0.805 0.125 78);
+    --imp-tint:  oklch(0.805 0.125 78 / 0.15);
+    --pol:       oklch(0.730 0.040 245);
+    --pol-tint:  oklch(0.730 0.040 245 / 0.16);
+
+    /* ——— Reach-cost ramp (FIXED — diagram + its legend only) ——— */
+    --reach-low:  oklch(0.745 0.135 152);  /* natural  */
+    --reach-med:  oklch(0.805 0.125 78);   /* stretch  */
+    --reach-high: oklch(0.655 0.185 25);   /* ow       */
+
+    /* ——— Verdict (FIXED — lens table) ——— */
+    --strong:  var(--reach-low);
+    --concern: var(--imp);
+    --problem: var(--crit);
+
+    /* ——— Spacing (4pt scale, semantic) ——— */
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
+    --s6:32px; --s7:48px; --s8:64px; --s9:96px;
+
+    --display: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+    --sans: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --mono: "Spline Sans Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--accent-tint); }
+  a { color: var(--accent-soft); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(40px, 6vw, 72px) clamp(20px, 5vw, 40px) 96px; }
+
+  /* shared micro-label */
+  .mono-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* ───────────── Header ───────────── */
+  header.doc { padding-bottom: var(--s7); margin-bottom: var(--s8); border-bottom: 1px solid var(--line); }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); display: inline-flex; align-items: center; gap: var(--s3);
+  }
+  .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--accent); display: inline-block; }
+  h1.title {
+    font-family: var(--display);
+    font-size: clamp(38px, 6vw, 60px);
+    font-weight: 700; letter-spacing: -0.025em; line-height: 1.02;
+    margin: var(--s5) 0 var(--s4); color: var(--paper); max-width: 16ch;
+  }
+  .lede { font-size: clamp(17px, 2.2vw, 19px); color: var(--paper-dim); max-width: 58ch; line-height: 1.6; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: var(--s6); margin-top: var(--s6); }
+  .meta-row .k { display: block; margin-bottom: 4px; }
+  .meta-row .v { font-size: 15px; color: var(--paper); }
+
+  .stats { display: flex; gap: clamp(20px, 4vw, 44px); margin-top: var(--s7); flex-wrap: wrap; }
+  .stat .num { font-family: var(--display); font-size: 40px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat.crit .num { color: var(--crit); }
+  .stat.imp .num  { color: var(--imp); }
+  .stat.pol .num  { color: var(--pol); }
+  .stat.forks .num { color: var(--accent-soft); }
+  .stat .lbl { margin-top: var(--s2); }
+
+  /* ───────────── Section scaffolding ───────────── */
+  section { margin-bottom: var(--s9); }
+  .sec-index { font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; color: var(--accent-soft); }
+  h2.section-title {
+    font-family: var(--display);
+    font-size: clamp(24px, 3.4vw, 32px);
+    font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+    margin: var(--s2) 0 var(--s4); color: var(--paper);
+  }
+  .section-sub { color: var(--paper-dim); max-width: 66ch; margin: 0 0 var(--s6); }
+  .section-sub em { color: var(--paper); font-style: italic; }
+
+  /* ───────────── Lens table ───────────── */
+  .lens-table { width: 100%; border-collapse: collapse; border: 1px solid var(--line); }
+  .lens-table th, .lens-table td { padding: var(--s4) var(--s5); text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .lens-table tr:last-child td { border-bottom: none; }
+  .lens-table thead th { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); font-weight: 500; }
+  .lens-table tbody tr:hover { background: rgba(255,255,255,0.018); }
+  .lens-name { font-weight: 600; color: var(--paper); width: 30%; }
+  .lens-name .who { display: block; margin-top: 2px; color: var(--muted); font-weight: 400; font-size: 13.5px; }
+  .lens-read { color: var(--paper-dim); }
+  .lens-read em { color: var(--paper); font-style: italic; }
+  .verdict { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; }
+  .verdict::before { content: ""; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .v-strong  { color: var(--strong); }  .v-strong::before  { background: var(--strong); }
+  .v-concern { color: var(--concern); } .v-concern::before { background: var(--concern); }
+  .v-problem { color: var(--problem); } .v-problem::before { background: var(--problem); }
+  .v-mixed   { color: var(--muted); }   .v-mixed::before   { background: var(--muted); }
+
+  /* ───────────── Thumb-zone diagram ───────────── */
+  .thumb-grid { display: grid; grid-template-columns: 320px 1fr; gap: clamp(28px, 5vw, 56px); align-items: start; }
+  @media (max-width: 820px) { .thumb-grid { grid-template-columns: 1fr; } }
+  .thumb-figure { width: 100%; max-width: 320px; }
+  .thumb-key h4 { margin: 0 0 var(--s4); }
+  .key-list { list-style: none; margin: 0 0 var(--s6); padding: 0; display: grid; gap: 2px; }
+  .key-list li { display: grid; grid-template-columns: 22px 1fr auto; align-items: baseline; gap: var(--s3); padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+  .key-list li:last-child { border-bottom: none; }
+  .key-list .kn { font-family: var(--mono); font-size: 12px; color: var(--paper); font-variant-numeric: tabular-nums; }
+  .key-list .ka { color: var(--paper-dim); }
+  .key-list .kz { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .kz.low  { color: var(--reach-low); }
+  .kz.med  { color: var(--reach-med); }
+  .kz.high { color: var(--reach-high); }
+  .zone-defs { display: grid; gap: var(--s3); margin-top: var(--s5); }
+  .zone-def { display: grid; grid-template-columns: 12px 1fr; gap: var(--s3); align-items: start; }
+  .zone-def .dot { width: 11px; height: 11px; border-radius: 50%; margin-top: 6px; }
+  .zone-def .zt { font-weight: 600; color: var(--paper); }
+  .zone-def .zd { font-size: 13.5px; color: var(--muted); }
+  .whats-off { margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); }
+  .whats-off .mono-label { color: var(--accent-soft); }
+  .whats-off p { margin: var(--s2) 0 0; color: var(--paper-dim); font-size: 14px; max-width: 52ch; }
+
+  /* ───────────── Per-screen mini phones ───────────── */
+  .screen-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--s4); }
+  .screen-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: var(--s5) var(--s4) var(--s4); display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .screen-card svg { width: 96px; height: auto; }
+  .screen-card .name { font-weight: 600; margin-top: var(--s4); font-size: 15px; }
+  .screen-card .read { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: var(--s1); }
+  .screen-card.good .read { color: var(--strong); }
+  .screen-card.warn .read { color: var(--concern); }
+  .screen-card.bad  .read { color: var(--problem); }
+  .screen-card .note { font-size: 12.5px; color: var(--muted); margin-top: var(--s3); line-height: 1.5; }
+
+  /* ───────────── Findings ───────────── */
+  .tier-label { display: flex; align-items: center; gap: var(--s4); margin: var(--s7) 0 var(--s5); }
+  .tier-label:first-of-type { margin-top: 0; }
+  .tier-label .mono-label { white-space: nowrap; }
+  .tier-label .rule { height: 1px; background: var(--line); flex: 1; }
+  .tier-label .count { font-family: var(--mono); font-size: 11px; color: var(--faint); }
+  .tier-label.crit .mono-label { color: var(--crit); }
+  .tier-label.imp  .mono-label { color: var(--imp); }
+  .tier-label.pol  .mono-label { color: var(--pol); }
+
+  .findings { display: flex; flex-direction: column; gap: var(--s5); }
+  .finding { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: clamp(22px, 3vw, 30px); }
+  .finding[data-sev="crit"] { border-color: var(--crit-tint); }
+  .finding-head { display: grid; grid-template-columns: auto 1fr; gap: var(--s4) var(--s5); align-items: start; margin-bottom: var(--s5); }
+  .find-num { font-family: var(--display); font-size: 34px; font-weight: 600; line-height: 0.9; font-variant-numeric: tabular-nums; color: var(--faint); }
+  .finding[data-sev="crit"] .find-num { color: var(--crit); }
+  .finding[data-sev="imp"]  .find-num { color: var(--imp); }
+  .finding[data-sev="pol"]  .find-num { color: var(--pol); }
+  .find-headtext { display: flex; flex-direction: column; gap: var(--s3); }
+  .find-tags { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
+  .severity { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; padding: 4px 9px; border-radius: 100px; }
+  .severity.crit { background: var(--crit-tint); color: var(--crit); }
+  .severity.imp  { background: var(--imp-tint);  color: var(--imp); }
+  .severity.pol  { background: var(--pol-tint);  color: var(--pol); }
+  .lens-chip { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 4px 9px; border: 1px solid var(--line-strong); border-radius: 100px; }
+  .find-title { font-family: var(--display); font-size: clamp(19px, 2.6vw, 23px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.22; margin: 2px 0 0; color: var(--paper); }
+  .finding[data-sev="pol"] .find-title { font-size: clamp(17px, 2.2vw, 20px); }
+  .find-body { display: grid; gap: var(--s4); max-width: 72ch; }
+  .find-body p { margin: 0; color: var(--paper-dim); }
+  .find-body p em { color: var(--paper); font-style: italic; }
+  .find-body .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); display: block; margin-bottom: 3px; }
+  .fix { background: var(--surface-2); border-radius: 8px; padding: var(--s4) var(--s5); }
+  .fix .label { color: var(--accent-soft); }
+  .fix p { color: var(--paper); }
+
+  /* ───────────── Fork comparison ───────────── */
+  .fork-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s4); }
+  .fork { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: var(--s5); display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .fork.recommended { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-tint); }
+  .fork-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .fork.recommended .fork-tag { color: var(--accent-soft); }
+  .fork.current .fork-tag { color: var(--concern); }
+  .fork h4 { font-family: var(--display); font-size: 19px; font-weight: 600; letter-spacing: -0.01em; margin: var(--s3) 0 var(--s2); }
+  .fork .summary { font-size: 13px; color: var(--muted); margin: 0 0 var(--s4); line-height: 1.5; }
+  .fork-phone { margin: var(--s2) 0 var(--s5); }
+  .fork ul { text-align: left; padding: 0; list-style: none; margin: 0; width: 100%; }
+  .fork li { font-size: 13px; color: var(--paper-dim); padding: var(--s3) 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 30px 1fr; gap: var(--s2); align-items: start; }
+  .fork li:first-child { border-top: none; }
+  .fork li .pro, .fork li .con { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; font-weight: 500; padding-top: 2px; }
+  .fork li .pro { color: var(--strong); }
+  .fork li .con { color: var(--problem); }
+
+  /* ───────────── Callouts / limits / next ───────────── */
+  .callout-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s4); }
+  .callout { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: var(--s5); }
+  .callout h4 { font-family: var(--display); font-size: 16px; font-weight: 600; margin: 0 0 var(--s3); color: var(--paper); }
+  .callout p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  .limits { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: var(--s6); }
+  .limits ul { margin: 0; padding-left: 1.2em; color: var(--paper-dim); display: grid; gap: var(--s3); max-width: 74ch; }
+  .limits em { color: var(--paper); font-style: italic; }
+
+  .steps { counter-reset: step; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s4); }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: var(--s5); counter-increment: step; }
+  .step .sn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--accent-soft); }
+  .step .sn::before { content: counter(step, decimal-leading-zero) "  "; }
+  .step h4 { font-family: var(--display); font-size: 17px; font-weight: 600; margin: var(--s3) 0 var(--s2); }
+  .step p { margin: 0; color: var(--muted); font-size: 13.5px; }
+
+  footer.doc { margin-top: var(--s8); padding-top: var(--s5); border-top: 1px solid var(--line); font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--s3); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lens-table tbody tr, .finding, .fork { transition: border-color 0.2s ease; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ═══════════ HEADER ═══════════ -->
+  <header class="doc">
+    <div class="eyebrow">Mobile design audit · thumb-first</div>
+    <h1 class="title">Skillet — what's working, what to revisit</h1>
+    <p class="lede">
+      A walk through Home, Chat, Pantry, Recipe and Scan with eight designer lenses — findings ordered by
+      what real users will hit in their hands, and the order to fix them.
+    </p>
+    <div class="meta-row">
+      <div><span class="mono-label k">Primary purpose</span><span class="v">Ask Skillet what to cook, hands often messy</span></div>
+      <div><span class="mono-label k">Platform</span><span class="v">Mobile web → native (iOS-weighted)</span></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num">8</div><div class="mono-label lbl">Findings</div></div>
+      <div class="stat crit"><div class="num">2</div><div class="mono-label lbl">Critical</div></div>
+      <div class="stat imp"><div class="num">4</div><div class="mono-label lbl">Important</div></div>
+      <div class="stat pol"><div class="num">2</div><div class="mono-label lbl">Polish</div></div>
+      <div class="stat forks"><div class="num">4</div><div class="mono-label lbl">Silent forks</div></div>
+    </div>
+  </header>
+
+  <!-- ═══════════ 01 · LENS SUMMARY ═══════════ -->
+  <section>
+    <div class="sec-index">01</div>
+    <h2 class="section-title">How each designer reads the app</h2>
+    <p class="section-sub">
+      Each row is a real practitioner whose work shaped this field. The read is what they'd push back on
+      most if they reviewed the prototype today.
+    </p>
+    <table class="lens-table">
+      <thead><tr><th>Lens</th><th>Verdict</th><th>One-line read</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="lens-name">Ergonomic Realist <span class="who">Steven Hoober</span></td>
+          <td><span class="verdict v-mixed">Mixed</span></td>
+          <td class="lens-read">Bottom CTAs are strong, but Pantry's <em>Add</em> and Skillet's hamburger sit in the high-cost top zone.</td>
+        </tr>
+        <tr>
+          <td class="lens-name">Thumb-Zone Mapper <span class="who">Scott Hurff</span></td>
+          <td><span class="verdict v-concern">Concern</span></td>
+          <td class="lens-read">Several frequent actions placed by desktop habit rather than reach cost.</td>
+        </tr>
+        <tr>
+          <td class="lens-name">Focus Forcer <span class="who">Luke Wroblewski</span></td>
+          <td><span class="verdict v-strong">Strong</span></td>
+          <td class="lens-read">Home and Pantry prioritize cleanly. One placeholder-as-label slip on Pantry's quick-add.</td>
+        </tr>
+        <tr>
+          <td class="lens-name">Direct Manipulation <span class="who">Josh Clark</span></td>
+          <td><span class="verdict v-strong">Strong</span></td>
+          <td class="lens-read">Ingredient checkboxes, recipe steps and the inspiration carousel behave like real content.</td>
+        </tr>
+        <tr>
+          <td class="lens-name">Navigation Taxonomist <span class="who">Frank Rausch</span></td>
+          <td><span class="verdict v-problem">Problem</span></td>
+          <td class="lens-read">Hamburger drawer for 4–5 destinations, and Chat — the actual product — has no visible entry.</td>
+        </tr>
+        <tr>
+          <td class="lens-name">Empirical Skeptic <span class="who">Raluca Budiu</span></td>
+          <td><span class="verdict v-concern">Concern</span></td>
+          <td class="lens-read">Both Pantry sheets are correctly scoped. The hamburger is the trend-over-evidence miss.</td>
+        </tr>
+        <tr>
+          <td class="lens-name">Modern Craft <span class="who">Allen · de With · Nelson</span></td>
+          <td><span class="verdict v-strong">Strong</span></td>
+          <td class="lens-read">Real personality (grid, mono micro-labels, terracotta). Allen wins — Skillet has voice.</td>
+        </tr>
+        <tr>
+          <td class="lens-name">Platform Canon <span class="who">HIG · Material 3</span></td>
+          <td><span class="verdict v-strong">Strong</span></td>
+          <td class="lens-read">Most touch targets land ≥44pt. Voice mic uses a 44pt hit shell over a 30px visual — nice.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════ 02 · THUMB-ZONE DIAGRAM ═══════════
+       Dots inside the phone carry ONLY a number, colored by zone.
+       The key list beside the phone carries the text. Collision-proof. -->
+  <section>
+    <div class="sec-index">02</div>
+    <h2 class="section-title">Where the actions land</h2>
+    <p class="section-sub">
+      Hurff's zones describe the <em>cost</em> of a location, not where things must go. A "Delete" in the Ow
+      zone is correct — the cost is the point. A frequent CTA there is the mistake. Each dot is one of
+      Skillet's primary actions, plotted where it lives today.
+    </p>
+    <div class="thumb-grid">
+      <svg class="thumb-figure" viewBox="0 0 320 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Phone diagram showing where Skillet's primary actions fall across thumb-reach zones">
+        <defs>
+          <radialGradient id="reach" cx="50%" cy="96%" r="92%">
+            <stop offset="0%"  stop-color="oklch(0.745 0.135 152)" stop-opacity="0.42"/>
+            <stop offset="42%" stop-color="oklch(0.745 0.135 152)" stop-opacity="0.20"/>
+            <stop offset="64%" stop-color="oklch(0.805 0.125 78)"  stop-opacity="0.26"/>
+            <stop offset="100%" stop-color="oklch(0.655 0.185 25)" stop-opacity="0.40"/>
+          </radialGradient>
+          <clipPath id="screen"><rect x="26" y="64" width="268" height="512" rx="30"/></clipPath>
+        </defs>
+
+        <!-- phone shell -->
+        <rect x="14" y="14" width="292" height="592" rx="44" fill="oklch(0.205 0.006 75)" stroke="oklch(0.32 0.006 75)" stroke-width="2"/>
+        <rect x="118" y="34" width="84" height="22" rx="11" fill="oklch(0.12 0.004 75)"/>
+        <!-- screen -->
+        <g clip-path="url(#screen)">
+          <rect x="26" y="64" width="268" height="512" fill="url(#reach)"/>
+          <line x1="26" y1="252" x2="294" y2="252" stroke="oklch(0.95 0.01 85)" stroke-opacity="0.07" stroke-dasharray="2 5"/>
+          <line x1="26" y1="430" x2="294" y2="430" stroke="oklch(0.95 0.01 85)" stroke-opacity="0.07" stroke-dasharray="2 5"/>
+        </g>
+        <!-- zone band labels -->
+        <text x="42" y="150" font-family="Spline Sans Mono, monospace" font-size="9.5" letter-spacing="1.8" fill="oklch(0.655 0.185 25)" fill-opacity="0.9">OW</text>
+        <text x="42" y="345" font-family="Spline Sans Mono, monospace" font-size="9.5" letter-spacing="1.8" fill="oklch(0.805 0.125 78)" fill-opacity="0.9">STRETCH</text>
+        <text x="42" y="528" font-family="Spline Sans Mono, monospace" font-size="9.5" letter-spacing="1.8" fill="oklch(0.745 0.135 152)" fill-opacity="0.9">NATURAL</text>
+
+        <!-- numbered action dots (color = zone). text carried by key list. -->
+        <!-- dot helper: circle + centered number -->
+        <g font-family="Spline Sans Mono, monospace" font-size="11" font-weight="600" text-anchor="middle" fill="oklch(0.165 0.006 75)">
+          <!-- OW -->
+          <circle cx="74"  cy="128" r="12" fill="oklch(0.655 0.185 25)"/><text x="74"  y="132">1</text>
+          <circle cx="246" cy="128" r="12" fill="oklch(0.655 0.185 25)"/><text x="246" y="132">2</text>
+          <circle cx="74"  cy="186" r="12" fill="oklch(0.655 0.185 25)"/><text x="74"  y="190">3</text>
+          <circle cx="246" cy="208" r="12" fill="oklch(0.655 0.185 25)"/><text x="246" y="212">4</text>
+          <!-- STRETCH -->
+          <circle cx="84"  cy="330" r="12" fill="oklch(0.805 0.125 78)"/><text x="84"  y="334">5</text>
+          <circle cx="160" cy="372" r="12" fill="oklch(0.805 0.125 78)"/><text x="160" y="376">6</text>
+          <!-- NATURAL -->
+          <circle cx="160" cy="500" r="13" fill="oklch(0.745 0.135 152)"/><text x="160" y="504">7</text>
+          <circle cx="246" cy="528" r="12" fill="oklch(0.745 0.135 152)"/><text x="246" y="532">8</text>
+          <circle cx="110" cy="528" r="12" fill="oklch(0.745 0.135 152)"/><text x="110" y="532">9</text>
+        </g>
+        <!-- home indicator -->
+        <rect x="119" y="586" width="82" height="4" rx="2" fill="oklch(0.95 0.01 85)" fill-opacity="0.55"/>
+      </svg>
+
+      <div class="thumb-key">
+        <h4 class="mono-label">The map</h4>
+        <ol class="key-list">
+          <li><span class="kn">1</span><span class="ka">Home · open menu drawer</span><span class="kz high">Ow</span></li>
+          <li><span class="kn">2</span><span class="ka">Pantry · add ingredient</span><span class="kz high">Ow</span></li>
+          <li><span class="kn">3</span><span class="ka">Recipe · back</span><span class="kz high">Ow</span></li>
+          <li><span class="kn">4</span><span class="ka">Inspiration · view all</span><span class="kz high">Ow</span></li>
+          <li><span class="kn">5</span><span class="ka">Chat · back</span><span class="kz med">Stretch</span></li>
+          <li><span class="kn">6</span><span class="ka">Recipe · advance step</span><span class="kz med">Stretch</span></li>
+          <li><span class="kn">7</span><span class="ka">Scan · capture</span><span class="kz low">Natural</span></li>
+          <li><span class="kn">8</span><span class="ka">Chat · send</span><span class="kz low">Natural</span></li>
+          <li><span class="kn">9</span><span class="ka">Home/Pantry · primary CTAs</span><span class="kz low">Natural</span></li>
+        </ol>
+
+        <div class="zone-defs">
+          <div class="zone-def"><span class="dot" style="background:var(--reach-low)"></span><div><span class="zt">Natural</span> · low cost — <span class="zd">effortless thumb arc. Primary actions, main nav, frequent controls.</span></div></div>
+          <div class="zone-def"><span class="dot" style="background:var(--reach-med)"></span><div><span class="zt">Stretch</span> · medium — <span class="zd">reachable but the grip shifts. Secondary actions, settings.</span></div></div>
+          <div class="zone-def"><span class="dot" style="background:var(--reach-high)"></span><div><span class="zt">Ow</span> · high cost — <span class="zd">a regrip to reach. Destructive or rare actions — or nothing important.</span></div></div>
+        </div>
+
+        <div class="whats-off">
+          <span class="mono-label">What's off</span>
+          <p>Two frequent actions — open menu (1) and add to pantry (2) — sit in the Ow zone. And Chat, the product's headline surface, has no dot at all: there's no visible affordance for it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 03 · PER-SCREEN READ ═══════════ -->
+  <section>
+    <div class="sec-index">03</div>
+    <h2 class="section-title">Each screen, one glance</h2>
+    <p class="section-sub">A quick verdict per screen so the findings have somewhere to anchor.</p>
+    <div class="screen-grid">
+      <div class="screen-card warn">
+        <svg viewBox="0 0 120 220"><rect x="3" y="3" width="114" height="214" rx="18" fill="oklch(0.245 0.007 75)" stroke="oklch(0.32 0.006 75)"/><circle cx="20" cy="22" r="6" fill="oklch(0.655 0.185 25)"/><circle cx="100" cy="22" r="6" fill="none" stroke="oklch(0.5 0.01 85)"/><rect x="14" y="42" width="62" height="8" rx="2" fill="oklch(0.8 0.006 85)"/><rect x="14" y="56" width="40" height="4" rx="1" fill="oklch(0.5 0.008 85)"/><rect x="14" y="76" width="92" height="80" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="14" y="148" width="28" height="28" rx="4" fill="none" stroke="oklch(0.32 0.006 75)"/><rect x="46" y="148" width="28" height="28" rx="4" fill="none" stroke="oklch(0.32 0.006 75)"/><rect x="78" y="148" width="28" height="28" rx="4" fill="none" stroke="oklch(0.32 0.006 75)"/><rect x="10" y="194" width="100" height="14" rx="4" fill="none" stroke="oklch(0.63 0.115 45)"/></svg>
+        <div class="name">Home</div><div class="read">Crowded bottom</div>
+        <div class="note">Hero CTA, quick actions and the Ask Skillet bar all compete for the bottom band.</div>
+      </div>
+      <div class="screen-card bad">
+        <svg viewBox="0 0 120 220"><rect x="3" y="3" width="114" height="214" rx="18" fill="oklch(0.245 0.007 75)" stroke="oklch(0.32 0.006 75)"/><circle cx="20" cy="22" r="6" fill="none" stroke="oklch(0.5 0.01 85)"/><rect x="32" y="18" width="30" height="8" rx="2" fill="oklch(0.8 0.006 85)"/><circle cx="100" cy="22" r="6" fill="none" stroke="oklch(0.5 0.01 85)"/><rect x="14" y="56" width="74" height="22" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="32" y="92" width="74" height="14" rx="4" fill="oklch(0.63 0.115 45)" fill-opacity="0.5"/><rect x="14" y="118" width="92" height="22" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="10" y="194" width="100" height="14" rx="4" fill="none" stroke="oklch(0.63 0.115 45)"/></svg>
+        <div class="name">Chat</div><div class="read">No entry</div>
+        <div class="note">The core surface is reachable only as a side effect of typing or scanning.</div>
+      </div>
+      <div class="screen-card warn">
+        <svg viewBox="0 0 120 220"><rect x="3" y="3" width="114" height="214" rx="18" fill="oklch(0.245 0.007 75)" stroke="oklch(0.32 0.006 75)"/><circle cx="20" cy="22" r="6" fill="none" stroke="oklch(0.5 0.01 85)"/><rect x="32" y="18" width="34" height="8" rx="2" fill="oklch(0.8 0.006 85)"/><circle cx="100" cy="22" r="7" fill="oklch(0.655 0.185 25)"/><rect x="14" y="42" width="92" height="6" rx="1" fill="oklch(0.5 0.008 85)" fill-opacity="0.5"/><rect x="14" y="58" width="44" height="44" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="62" y="58" width="44" height="44" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="14" y="108" width="44" height="44" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="62" y="108" width="44" height="44" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="10" y="194" width="100" height="14" rx="4" fill="oklch(0.745 0.135 152)" fill-opacity="0.6"/></svg>
+        <div class="name">Pantry</div><div class="read">Add is far</div>
+        <div class="note">"What can I make?" sits where you want it; "Add ingredient" sits where you don't.</div>
+      </div>
+      <div class="screen-card good">
+        <svg viewBox="0 0 120 220"><rect x="3" y="3" width="114" height="214" rx="18" fill="oklch(0.245 0.007 75)" stroke="oklch(0.32 0.006 75)"/><circle cx="20" cy="22" r="6" fill="none" stroke="oklch(0.5 0.01 85)"/><rect x="32" y="18" width="44" height="8" rx="2" fill="oklch(0.8 0.006 85)"/><rect x="80" y="20" width="26" height="6" rx="1" fill="oklch(0.5 0.008 85)"/><rect x="14" y="44" width="56" height="10" rx="2" fill="oklch(0.63 0.115 45)" fill-opacity="0.45"/><rect x="14" y="60" width="92" height="6" rx="1" fill="oklch(0.5 0.008 85)" fill-opacity="0.5"/><rect x="14" y="78" width="92" height="44" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="14" y="130" width="92" height="44" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="10" y="194" width="100" height="14" rx="4" fill="oklch(0.745 0.135 152)" fill-opacity="0.6"/></svg>
+        <div class="name">Recipe</div><div class="read">Reads well</div>
+        <div class="note">Family pill → notes → method works. Collapsed-step affordance could be clearer.</div>
+      </div>
+      <div class="screen-card good">
+        <svg viewBox="0 0 120 220"><rect x="3" y="3" width="114" height="214" rx="18" fill="oklch(0.12 0.004 75)"/><rect x="14" y="44" width="92" height="120" rx="4" fill="oklch(0.205 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="14" y="172" width="92" height="14" rx="4" fill="none" stroke="oklch(0.32 0.006 75)"/><circle cx="60" cy="200" r="11" fill="oklch(0.935 0.005 85)"/><circle cx="60" cy="200" r="8" fill="none" stroke="oklch(0.12 0.004 75)"/><rect x="14" y="194" width="20" height="14" rx="3" fill="oklch(0.245 0.007 75)" stroke="oklch(0.32 0.006 75)"/><rect x="86" y="194" width="20" height="14" rx="3" fill="oklch(0.245 0.007 75)" stroke="oklch(0.32 0.006 75)"/></svg>
+        <div class="name">Scan</div><div class="read">Camera-class</div>
+        <div class="note">Capture button centered in the natural zone — the right call.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 04 · FINDINGS ═══════════ -->
+  <section>
+    <div class="sec-index">04</div>
+    <h2 class="section-title">In the order I'd fix them</h2>
+    <p class="section-sub">
+      Ordered by user impact: <em>critical</em> (blocks or badly degrades the primary task) → <em>important</em>
+      (real friction) → <em>polish</em> (refinement).
+    </p>
+
+    <div class="tier-label crit"><span class="mono-label">Critical</span><span class="rule"></span><span class="count">2</span></div>
+    <div class="findings">
+      <article class="finding" data-sev="crit">
+        <div class="finding-head">
+          <span class="find-num">01</span>
+          <div class="find-headtext">
+            <div class="find-tags"><span class="severity crit">Critical</span><span class="lens-chip">Rausch</span><span class="lens-chip">Budiu</span></div>
+            <h3 class="find-title">Hamburger drawer is the wrong primary nav for this content</h3>
+          </div>
+        </div>
+        <div class="find-body">
+          <p><span class="label">What</span>Four stable destinations (My Pantry, Discover, My Tastes, About) plus Home plus Chat — the tab bar's natural range. Rausch is blunt: hamburger menus are "the tab bar's evil sibling." Tab bars measurably outperform them, and a first-time user opening Skillet sees zero destinations.</p>
+          <p><span class="label">Why it matters</span>Your app's surface area is invisible. A returning user can find things; a new user has to discover by tapping a vague list icon top-left — high-cost reach, low semantic value.</p>
+          <div class="fix"><p><span class="label">Fix · decision needed</span>Replace the drawer with a bottom tab bar (Home · Pantry · Discover · Chat · Profile — five, the sweet spot). Or, for a conversational-first identity, keep nav minimal but make Chat a <em>visible</em> persistent entry, not a side effect of typing. See the three options in §05.</p></div>
+        </div>
+      </article>
+      <article class="finding" data-sev="crit">
+        <div class="finding-head">
+          <span class="find-num">02</span>
+          <div class="find-headtext">
+            <div class="find-tags"><span class="severity crit">Critical</span><span class="lens-chip">Rausch</span><span class="lens-chip">Wroblewski</span></div>
+            <h3 class="find-title">Chat — the actual product — has no visible navigation affordance</h3>
+          </div>
+        </div>
+        <div class="find-body">
+          <p><span class="label">What</span>The only ways into Chat today are: type in the Home bar and send, get routed via a scan, or tap "Ask Skillet" inside Pantry's Add panel. There is no Chat tab, button, or "open conversation" affordance.</p>
+          <p><span class="label">Why it matters</span>Users who want to <em>resume</em> a conversation without composing a fresh message can't. It frames the product as a recipe app with a search bar, not an AI cooking assistant.</p>
+          <div class="fix"><p><span class="label">Fix</span>Make Chat a top-level destination. If you keep the conversational framing on Home, add at minimum an "Open chat" / "Past chats" affordance somewhere reachable — not buried in the history sheet inside chat.</p></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="tier-label imp"><span class="mono-label">Important</span><span class="rule"></span><span class="count">4</span></div>
+    <div class="findings">
+      <article class="finding" data-sev="imp">
+        <div class="finding-head">
+          <span class="find-num">03</span>
+          <div class="find-headtext">
+            <div class="find-tags"><span class="severity imp">Important</span><span class="lens-chip">Hoober</span><span class="lens-chip">Hurff</span></div>
+            <h3 class="find-title">"Add to pantry" lives in the top-right Ow zone</h3>
+          </div>
+        </div>
+        <div class="find-body">
+          <p><span class="label">What</span>The plus button on Pantry is top-right (40pt circle). Adding ingredients is a <em>frequent, repeatable</em> action for the core use case. Hurff would put frequent actions in the bottom Natural zone — and you've already established a bottom-action pattern on this same screen with "What can I make?"</p>
+          <p><span class="label">Why it matters</span>The secondary CTA gets the easy zone and the more frequent one gets the hard zone — that's backwards.</p>
+          <div class="fix"><p><span class="label">Fix</span>Pull "Add" to a FAB above the bottom CTA, or merge the panel into a sheet that opens from a bottom action. The top-right plus is a desktop habit; the rest of the screen doesn't behave that way.</p></div>
+        </div>
+      </article>
+      <article class="finding" data-sev="imp">
+        <div class="finding-head">
+          <span class="find-num">04</span>
+          <div class="find-headtext">
+            <div class="find-tags"><span class="severity imp">Important</span><span class="lens-chip">Hurff</span><span class="lens-chip">de With</span></div>
+            <h3 class="find-title">Persistent Ask Skillet bar on Home double-books the natural zone</h3>
+          </div>
+        </div>
+        <div class="find-body">
+          <p><span class="label">What</span>Home has both a sticky "Ask Skillet…" input <em>and</em> a "Make this recipe" CTA on the hero card. The input occupies the natural-zone real estate a tab bar would otherwise use, and pushes content up under a gradient mask.</p>
+          <p><span class="label">Why it matters</span>If finding 01 leads to a tab bar, the input and the tab bar will fight for the same band. Decide now — don't end up with both stacked.</p>
+          <div class="fix"><p><span class="label">Fix · silent fork</span><strong>A.</strong> Tab bar wins — the Ask Skillet entry collapses into a single Chat tab; Home is a content surface. <strong>B.</strong> Conversational entry wins — the input stays, no tab bar, Home and Chat are one surface. Both are valid; pick deliberately.</p></div>
+        </div>
+      </article>
+      <article class="finding" data-sev="imp">
+        <div class="finding-head">
+          <span class="find-num">05</span>
+          <div class="find-headtext">
+            <div class="find-tags"><span class="severity imp">Important</span><span class="lens-chip">Clark</span><span class="lens-chip">Allen</span></div>
+            <h3 class="find-title">Voice is hidden inside a text-input UI for a hands-busy product</h3>
+          </div>
+        </div>
+        <div class="find-body">
+          <p><span class="label">What</span>The mic is a 30px circle inside the text input. For an app you'd use while your hands are covered in flour, voice is plausibly the <em>primary</em> input — not a tertiary affordance behind a text composer.</p>
+          <p><span class="label">Why it matters</span>When hands are messy or full mid-prep, the only good input is voice. Treating it as a secondary inline glyph buries the only ergonomic answer.</p>
+          <div class="fix"><p><span class="label">Fix</span>Consider a voice-first composer — a prominent mic as default, text field on tap. At minimum, raise the mic to full size when typing isn't already in progress.</p></div>
+        </div>
+      </article>
+      <article class="finding" data-sev="imp">
+        <div class="finding-head">
+          <span class="find-num">06</span>
+          <div class="find-headtext">
+            <div class="find-tags"><span class="severity imp">Important</span><span class="lens-chip">Wroblewski</span></div>
+            <h3 class="find-title">Pantry's "Ingredient name…" uses placeholder-as-label</h3>
+          </div>
+        </div>
+        <div class="find-body">
+          <p><span class="label">What</span>The quick-add input has placeholder "Ingredient name…" with no persistent label — Wroblewski's most consistent rule on mobile forms.</p>
+          <p><span class="label">Why it matters</span>The placeholder vanishes exactly when the user starts typing — context gone at the moment of need.</p>
+          <div class="fix"><p><span class="label">Fix</span>Top-aligned visible label ("Ingredient name") with a format example <em>below</em> ("e.g. San Marzano tomatoes").</p></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="tier-label pol"><span class="mono-label">Polish</span><span class="rule"></span><span class="count">2</span></div>
+    <div class="findings">
+      <article class="finding" data-sev="pol">
+        <div class="finding-head">
+          <span class="find-num">07</span>
+          <div class="find-headtext">
+            <div class="find-tags"><span class="severity pol">Polish</span><span class="lens-chip">Hoober</span><span class="lens-chip">Platform Canon</span></div>
+            <h3 class="find-title">Recipe back affordance is top-left only, mid-recipe</h3>
+          </div>
+        </div>
+        <div class="find-body">
+          <p><span class="label">What</span>While stepping through a curated recipe, the only way back is the top-left arrow.</p>
+          <p><span class="label">Why it matters</span>A high-reach press to leave a screen you may flip in and out of while mixing. A redundant lower-zone exit would respect the use context.</p>
+          <div class="fix"><p><span class="label">Fix</span>A small "Exit recipe" / "Back to chat" link at the bottom of the recipe scroll, so leaving doesn't require a stretch.</p></div>
+        </div>
+      </article>
+      <article class="finding" data-sev="pol">
+        <div class="finding-head">
+          <span class="find-num">08</span>
+          <div class="find-headtext">
+            <div class="find-tags"><span class="severity pol">Polish</span><span class="lens-chip">Clark</span></div>
+            <h3 class="find-title">Recipe step "tap to expand" has no visible affordance</h3>
+          </div>
+        </div>
+        <div class="find-body">
+          <p><span class="label">What</span>A collapsed step shows number + truncated title — tappable, but nothing signals it.</p>
+          <p><span class="label">Why it matters</span>Returning to an earlier step requires the user to guess the collapsed row is interactive.</p>
+          <div class="fix"><p><span class="label">Fix</span>A chevron or "expand" glyph at the right edge of collapsed steps costs almost nothing and resolves it.</p></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═══════════ 05 · THE BIG FORK ═══════════ -->
+  <section>
+    <div class="sec-index">05</div>
+    <h2 class="section-title">Primary navigation — pick one, deliberately</h2>
+    <p class="section-sub">
+      Findings 01, 02 and 04 are entangled — they want one design pass, not three patches. Three coherent
+      answers, side by side.
+    </p>
+    <div class="fork-grid">
+      <div class="fork current">
+        <div class="fork-tag">Option A · current</div>
+        <h4>Hamburger drawer</h4>
+        <div class="summary">Top-left list icon opens a side sheet with four destinations. Home owns the conversation entry.</div>
+        <div class="fork-phone">
+          <svg viewBox="0 0 120 220" width="108"><rect x="3" y="3" width="114" height="214" rx="18" fill="oklch(0.245 0.007 75)" stroke="oklch(0.32 0.006 75)"/><circle cx="20" cy="22" r="7" fill="oklch(0.655 0.185 25)"/><circle cx="100" cy="22" r="7" fill="none" stroke="oklch(0.5 0.01 85)"/><rect x="14" y="44" width="92" height="120" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="10" y="194" width="100" height="14" rx="4" fill="none" stroke="oklch(0.63 0.115 45)"/></svg>
+        </div>
+        <ul>
+          <li><span class="con">CON</span><span>Hides all destinations behind one ambiguous icon.</span></li>
+          <li><span class="con">CON</span><span>High-cost top-left reach for primary nav.</span></li>
+          <li><span class="con">CON</span><span>Chat — your product — has no entry of its own.</span></li>
+          <li><span class="pro">PRO</span><span>Maximum content space on Home.</span></li>
+        </ul>
+      </div>
+      <div class="fork recommended">
+        <div class="fork-tag">Option B · recommended</div>
+        <h4>Bottom tab bar</h4>
+        <div class="summary">Five destinations (Home · Pantry · Chat · Discover · Profile) in the natural zone. Conversation becomes a real surface.</div>
+        <div class="fork-phone">
+          <svg viewBox="0 0 120 220" width="108"><rect x="3" y="3" width="114" height="214" rx="18" fill="oklch(0.245 0.007 75)" stroke="oklch(0.32 0.006 75)"/><rect x="14" y="44" width="92" height="140" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="3" y="188" width="114" height="29" rx="4" fill="oklch(0.205 0.006 75)" stroke="oklch(0.32 0.006 75)"/><circle cx="20" cy="202" r="4" fill="oklch(0.63 0.115 45)"/><circle cx="40" cy="202" r="4" fill="oklch(0.5 0.008 85)"/><circle cx="60" cy="202" r="4" fill="oklch(0.5 0.008 85)"/><circle cx="80" cy="202" r="4" fill="oklch(0.5 0.008 85)"/><circle cx="100" cy="202" r="4" fill="oklch(0.5 0.008 85)"/></svg>
+        </div>
+        <ul>
+          <li><span class="pro">PRO</span><span>Every destination visible at first launch.</span></li>
+          <li><span class="pro">PRO</span><span>Chat becomes a first-class surface.</span></li>
+          <li><span class="pro">PRO</span><span>All nav lives in the natural thumb zone.</span></li>
+          <li><span class="con">CON</span><span>Ask Skillet bar must go (or live inside the Chat tab only).</span></li>
+        </ul>
+      </div>
+      <div class="fork">
+        <div class="fork-tag">Option C · alternative</div>
+        <h4>Conversational shell</h4>
+        <div class="summary">Embrace the Ask-Skillet bar as the product's spine. Home and Chat are one surface — no tabs, no drawer.</div>
+        <div class="fork-phone">
+          <svg viewBox="0 0 120 220" width="108"><rect x="3" y="3" width="114" height="214" rx="18" fill="oklch(0.245 0.007 75)" stroke="oklch(0.32 0.006 75)"/><circle cx="100" cy="22" r="7" fill="none" stroke="oklch(0.5 0.01 85)"/><rect x="14" y="44" width="92" height="40" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="14" y="92" width="92" height="80" rx="4" fill="oklch(0.165 0.006 75)" stroke="oklch(0.32 0.006 75)"/><rect x="10" y="184" width="100" height="24" rx="5" fill="oklch(0.165 0.006 75)" stroke="oklch(0.63 0.115 45)"/><circle cx="98" cy="196" r="6" fill="oklch(0.63 0.115 45)"/></svg>
+        </div>
+        <ul>
+          <li><span class="pro">PRO</span><span>Strongest identity — Skillet is conversation, not chrome.</span></li>
+          <li><span class="pro">PRO</span><span>Voice and text live in one prominent surface (resolves 05).</span></li>
+          <li><span class="con">CON</span><span>Pantry / Discover / Profile must surface inside conversation.</span></li>
+          <li><span class="con">CON</span><span>Higher discovery cost for non-conversational features.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 06 · OTHER FORKS ═══════════ -->
+  <section>
+    <div class="sec-index">06</div>
+    <h2 class="section-title">Decisions that were made silently</h2>
+    <p class="section-sub">Not necessarily wrong — but worth surfacing as <em>decisions</em>, not defaults.</p>
+    <div class="callout-grid">
+      <div class="callout"><h4>Where Chat lives in the mental model</h4><p>Side effect of composition vs. first-class destination. Currently a side effect. See 02 and 05.</p></div>
+      <div class="callout"><h4>Input mode hierarchy</h4><p>Text-first with mic vs. voice-first with text fallback. Currently text-first; the hands-busy use case leans voice.</p></div>
+      <div class="callout"><h4>Add-to-Pantry surfacing</h4><p>Top-right plus vs. bottom CTA vs. scan-first. The plus was a desktop default; nothing on the screen earned it.</p></div>
+      <div class="callout"><h4>Recipe "back step" semantics</h4><p>Visible chevron vs. discoverable-by-tap. Currently the second. Cheap to upgrade.</p></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 07 · LIMITS ═══════════ -->
+  <section>
+    <div class="sec-index">07</div>
+    <h2 class="section-title">What I can't see from code alone</h2>
+    <div class="limits">
+      <ul>
+        <li>Real reach on physical devices — the 402×874 frame fakes a smaller surface than an actual 6.3" phone.</li>
+        <li>Motion <em>feel</em> — Allen's lens needs the running app; I can see the CSS, not the cadence.</li>
+        <li>Keyboard interaction with the bottom bar in real Safari (and later, a native keyboard).</li>
+        <li>Voice dictation flow end-to-end on a phone.</li>
+        <li>Onboarding and Discover — both skipped. Happy to audit next if useful.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════ 08 · NEXT STEPS ═══════════ -->
+  <section style="margin-bottom: var(--s6);">
+    <div class="sec-index">08</div>
+    <h2 class="section-title">Threads you can pull</h2>
+    <div class="steps">
+      <div class="step"><div class="sn"></div><h4>Re-plan the navigation</h4><p>Findings 01 · 02 · 04 are entangled. Run them as a single design pass — pick from §05.</p></div>
+      <div class="step"><div class="sn"></div><h4>Re-plan the Pantry add flow</h4><p>Findings 03 + 06 together. Bottom-anchored entry plus a real form (visible label, not placeholder).</p></div>
+      <div class="step"><div class="sn"></div><h4>Audit the skipped screens</h4><p>Run the same eight lenses against Onboarding and Discover so the audit is complete.</p></div>
+    </div>
+  </section>
+
+  <footer class="doc">
+    <span>Skillet mobile design audit · thumb-first</span>
+    <span>8 findings · 2 critical · 4 important · 2 polish</span>
+  </footer>
+
+</div>
+</body>
+</html>

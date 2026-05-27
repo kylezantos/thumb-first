@@ -70,6 +70,15 @@ A silently-decided fork isn't automatically wrong — but it should have been a 
 
 ## Step 5: Present Prioritized Findings
 
+Two output modes — see `references/output-format.md` for the full spec.
+
+- **HTML report (default).** Adapt `references/report-template.html` (a self-contained, worked example), fill it with this audit's content, write it to the audited project (`{project}/mobile-audits/{name}-mobile-audit.html` or the project's existing convention), and open it in the browser. The template governs the visual system: keep the four color channels separate, sample one accent from the product, and build the thumb-zone diagram with the numbered-dot + key-list pattern (never freehand SVG labels). Render only the sections this audit produced.
+- **Terminal report (flag).** If the user passes `--terminal` / `--inline` / "skip the HTML" / "show it inline," skip the file and render the plain-text format below.
+
+Both modes carry the same content, ordering, and lens attribution.
+
+### Terminal format
+
 ```
 MOBILE DESIGN AUDIT — [screen / feature]
 
