@@ -40,7 +40,7 @@
     --surface-2:  oklch(0.245 0.007 75);
     --paper:      oklch(0.935 0.005 85);
     --paper-dim:  oklch(0.795 0.006 85);
-    --muted:      oklch(0.620 0.008 85);
+    --muted:      oklch(0.675 0.008 85);
     --faint:      oklch(0.500 0.008 85);
     --line:       oklch(0.95 0.01 85 / 0.09);
     --line-strong:oklch(0.95 0.01 85 / 0.16);
@@ -73,6 +73,7 @@
     /* ——— Spacing (4pt scale, semantic) ——— */
     --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
     --s6:32px; --s7:48px; --s8:64px; --s9:96px;
+    --find-rail: 46px;  /* finding number column; mirrored as an empty right rail so content insets equally L/R */
 
     --display: "Schibsted Grotesk", "Hanken Grotesk", system-ui, sans-serif;
     --sans: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -119,7 +120,7 @@
     font-weight: 700; letter-spacing: -0.025em; line-height: 1.02;
     margin: var(--s5) 0 var(--s4); color: var(--paper); max-width: 16ch;
   }
-  .lede { font-size: clamp(17px, 2.2vw, 19px); color: var(--paper-dim); max-width: 58ch; line-height: 1.6; }
+  .lede { font-size: clamp(17px, 2.2vw, 19px); color: var(--paper-dim); max-width: 66ch; line-height: 1.6; }
   .meta-row { display: flex; flex-wrap: wrap; gap: var(--s6); margin-top: var(--s6); }
   .meta-row .k { display: block; margin-bottom: 4px; }
   .meta-row .v { font-size: 15px; color: var(--paper); }
@@ -141,7 +142,7 @@
     font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
     margin: var(--s2) 0 var(--s4); color: var(--paper);
   }
-  .section-sub { color: var(--paper-dim); max-width: 66ch; margin: 0 0 var(--s6); }
+  .section-sub { color: var(--paper-dim); max-width: 74ch; margin: 0 0 var(--s6); }
   .section-sub em { color: var(--paper); font-style: italic; }
 
   /* ───────────── Lens table ───────────── */
@@ -171,7 +172,7 @@
   .key-list li:last-child { border-bottom: none; }
   .key-list .kn { font-family: var(--mono); font-size: 12px; color: var(--paper); font-variant-numeric: tabular-nums; }
   .key-list .ka { color: var(--paper-dim); }
-  .key-list .kz { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .key-list .kz { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; }
   .kz.low  { color: var(--reach-low); }
   .kz.med  { color: var(--reach-med); }
   .kz.high { color: var(--reach-high); }
@@ -182,14 +183,14 @@
   .zone-def .zd { font-size: 13.5px; color: var(--muted); }
   .whats-off { margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); }
   .whats-off .mono-label { color: var(--accent-soft); }
-  .whats-off p { margin: var(--s2) 0 0; color: var(--paper-dim); font-size: 14px; max-width: 52ch; }
+  .whats-off p { margin: var(--s2) 0 0; color: var(--paper-dim); font-size: 14px; max-width: 60ch; }
 
   /* ───────────── Per-screen mini phones ───────────── */
   .screen-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--s4); }
-  .screen-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: var(--s5) var(--s4) var(--s4); display: flex; flex-direction: column; align-items: center; text-align: center; }
-  .screen-card svg { width: 96px; height: auto; }
+  .screen-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: var(--s5) var(--s4) var(--s4); display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+  .screen-card svg { width: 96px; height: auto; align-self: center; }
   .screen-card .name { font-weight: 600; margin-top: var(--s4); font-size: 15px; }
-  .screen-card .read { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: var(--s1); }
+  .screen-card .read { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: var(--s1); }
   .screen-card.good .read { color: var(--strong); }
   .screen-card.warn .read { color: var(--concern); }
   .screen-card.bad  .read { color: var(--problem); }
@@ -206,44 +207,46 @@
   .tier-label.pol  .mono-label { color: var(--pol); }
 
   .findings { display: flex; flex-direction: column; gap: var(--s5); }
-  .finding { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: clamp(22px, 3vw, 30px); }
+  .finding { display: grid; grid-template-columns: var(--find-rail) 1fr var(--find-rail); column-gap: var(--s5); row-gap: var(--s5); align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: clamp(22px, 3vw, 30px); }
   .finding[data-sev="crit"] { border-color: var(--crit-tint); }
-  .finding-head { display: grid; grid-template-columns: auto 1fr; gap: var(--s4) var(--s5); align-items: start; margin-bottom: var(--s5); }
-  .find-num { font-family: var(--display); font-size: 34px; font-weight: 600; line-height: 0.9; font-variant-numeric: tabular-nums; color: var(--faint); }
+  /* Number sits in its own left rail; chips, title and body all share the col-2 left edge (optimized for skimming). */
+  .finding-head { display: contents; }
+  .find-num { grid-column: 1; grid-row: 1; font-family: var(--display); font-size: 34px; font-weight: 600; line-height: 0.9; font-variant-numeric: tabular-nums; color: var(--faint); }
   .finding[data-sev="crit"] .find-num { color: var(--crit); }
   .finding[data-sev="imp"]  .find-num { color: var(--imp); }
   .finding[data-sev="pol"]  .find-num { color: var(--pol); }
-  .find-headtext { display: flex; flex-direction: column; gap: var(--s3); }
+  .find-headtext { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: var(--s3); }
   .find-tags { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
-  .severity { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; padding: 4px 9px; border-radius: 100px; }
+  .severity { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; padding: 4px 9px; border-radius: 100px; }
   .severity.crit { background: var(--crit-tint); color: var(--crit); }
   .severity.imp  { background: var(--imp-tint);  color: var(--imp); }
   .severity.pol  { background: var(--pol-tint);  color: var(--pol); }
-  .lens-chip { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 4px 9px; border: 1px solid var(--line-strong); border-radius: 100px; }
+  .lens-chip { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 4px 9px; border: 1px solid var(--line-strong); border-radius: 100px; }
   .find-title { font-family: var(--display); font-size: clamp(19px, 2.6vw, 23px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.22; margin: 2px 0 0; color: var(--paper); }
   .finding[data-sev="pol"] .find-title { font-size: clamp(17px, 2.2vw, 20px); }
-  .find-body { display: grid; gap: var(--s4); max-width: 72ch; }
+  /* No max-width: body fills the content column so its right gutter mirrors the number's left gutter (symmetric within the card). */
+  .find-body { grid-column: 2; grid-row: 2; display: grid; gap: var(--s4); }
   .find-body p { margin: 0; color: var(--paper-dim); }
   .find-body p em { color: var(--paper); font-style: italic; }
-  .find-body .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); display: block; margin-bottom: 3px; }
+  .find-body .label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 3px; }
   .fix { background: var(--surface-2); border-radius: 8px; padding: var(--s4) var(--s5); }
   .fix .label { color: var(--accent-soft); }
   .fix p { color: var(--paper); }
 
   /* ───────────── Fork comparison ───────────── */
   .fork-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s4); }
-  .fork { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: var(--s5); display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .fork { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: var(--s5); display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
   .fork.recommended { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-tint); }
-  .fork-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .fork-tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
   .fork.recommended .fork-tag { color: var(--accent-soft); }
   .fork.current .fork-tag { color: var(--concern); }
   .fork h4 { font-family: var(--display); font-size: 19px; font-weight: 600; letter-spacing: -0.01em; margin: var(--s3) 0 var(--s2); }
   .fork .summary { font-size: 13px; color: var(--muted); margin: 0 0 var(--s4); line-height: 1.5; }
-  .fork-phone { margin: var(--s2) 0 var(--s5); }
+  .fork-phone { margin: var(--s2) 0 var(--s5); align-self: center; }
   .fork ul { text-align: left; padding: 0; list-style: none; margin: 0; width: 100%; }
   .fork li { font-size: 13px; color: var(--paper-dim); padding: var(--s3) 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 30px 1fr; gap: var(--s2); align-items: start; }
   .fork li:first-child { border-top: none; }
-  .fork li .pro, .fork li .con { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; font-weight: 500; padding-top: 2px; }
+  .fork li .pro, .fork li .con { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; font-weight: 500; padding-top: 2px; }
   .fork li .pro { color: var(--strong); }
   .fork li .con { color: var(--problem); }
 
@@ -254,7 +257,7 @@
   .callout p { margin: 0; color: var(--muted); font-size: 14px; }
 
   .limits { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: var(--s6); }
-  .limits ul { margin: 0; padding-left: 1.2em; color: var(--paper-dim); display: grid; gap: var(--s3); max-width: 74ch; }
+  .limits ul { margin: 0; padding-left: 1.2em; color: var(--paper-dim); display: grid; gap: var(--s3); max-width: 82ch; }
   .limits em { color: var(--paper); font-style: italic; }
 
   .steps { counter-reset: step; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s4); }
@@ -265,6 +268,23 @@
   .step p { margin: 0; color: var(--muted); font-size: 13.5px; }
 
   footer.doc { margin-top: var(--s8); padding-top: var(--s5); border-top: 1px solid var(--line); font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--s3); }
+
+  /* ───────────── Narrow screens ───────────── */
+  @media (max-width: 600px) {
+    /* Findings collapse to a single column — number stacks above its content, same left edge. */
+    .finding { grid-template-columns: 1fr; row-gap: var(--s3); }
+    .find-num, .find-headtext, .find-body { grid-column: 1; grid-row: auto; }
+
+    /* Lens table → stacked blocks so the read column never clips off-screen. */
+    .lens-table { display: block; padding: var(--s2) var(--s4); }
+    .lens-table thead { display: none; }
+    .lens-table tbody, .lens-table tr, .lens-table td { display: block; }
+    .lens-table tr { padding: var(--s4) 0; border-bottom: 1px solid var(--line); }
+    .lens-table tr:last-child { border-bottom: none; }
+    .lens-table td { padding: 0; border: none; }
+    .lens-table .lens-name { width: auto; margin-bottom: var(--s2); }
+    .lens-table .verdict { margin-bottom: var(--s2); }
+  }
 
   @media (prefers-reduced-motion: no-preference) {
     .lens-table tbody tr, .finding, .fork { transition: border-color 0.2s ease; }
