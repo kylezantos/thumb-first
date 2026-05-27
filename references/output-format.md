@@ -25,7 +25,7 @@ Write to the audited project, not to a temp dir:
 {project-root}/mobile-audits/{project-name}-mobile-audit.html
 ```
 
-If the project already has a `.context/`, `docs/`, or `audits/` convention, follow it. Create the directory if needed. After writing, **open it in the default browser** (`open <path>` on macOS). Tell the user the path.
+If the project already has a `.context/`, `docs/`, or `audits/` convention, follow it. Create the directory if needed. After writing, **open it in the default browser** using the platform's opener (`open` on macOS, `xdg-open` on Linux, `start` on Windows). Tell the user the path.
 
 ### Color discipline — the one rule that matters
 
