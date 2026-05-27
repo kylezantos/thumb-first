@@ -87,7 +87,7 @@ The visual system is fixed; the sections are not. Delete any `<section>` the aud
 - **No `border-left`/`border-right` accent stripes** > 1px on cards, findings, callouts, or fix blocks. The template uses full borders, tinted blocks, and leading numerals instead. (This was the prior reports' biggest tell.)
 - **No gradient text** (`background-clip: text` + gradient).
 - **No pulsing / breathing / glowing** elements — no looping scale/opacity pulses, no "live" indicators. The report has no entrance or scroll animation at all; the only motion is a quiet border-color transition on hover.
-- **No banned fonts** — the template uses Bricolage Grotesque (display) / Hanken Grotesk (body) / Spline Sans Mono (labels). Keep them. Do not swap in Inter, Space Grotesk, IBM Plex, DM Sans, Instrument, etc.
+- **No banned fonts** — the template uses Schibsted Grotesk (display) / Hanken Grotesk (body) / Spline Sans Mono (labels). Keep them. Do not swap in Inter, Space Grotesk, IBM Plex, DM Sans, Instrument, etc.
 - OKLCH colors, tinted neutrals, no pure black/white. The template already obeys this — keep it when editing.
 
 ### Empty / edge states
