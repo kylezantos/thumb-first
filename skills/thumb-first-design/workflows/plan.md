@@ -105,7 +105,7 @@ Platform-in-transition flags: [iOS 26 / M3 dependencies, if any]
 
 Per the user's preference, a self-contained HTML artifact is a good format for a brief like this if the user wants something richer than markdown — offer it; otherwise markdown is fine.
 
-**Hand-off:** name the implementation skill the brief should go to — `responsive-craft` (responsive web), `mobile-design-audit` (mobile-web/PWA), or the React Native/Expo skills (native). thumb-first decided the design; it does not write the implementation.
+**Hand-off:** name the implementation skill the brief should go to — `responsive-craft` (responsive web), `thumb-first-platform` (mobile-web/PWA technical), or the React Native/Expo skills (native). thumb-first-design decided the design; it does not write the implementation.
 
 ---
 

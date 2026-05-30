@@ -23,9 +23,36 @@
     • Reach ramp ........ fixed: --reach-low/med/high. Diagram only.
     • Verdict chips ..... fixed: strong / concern / problem / mixed.
 
+  DUAL THEME — the report ships a pure-CSS Dark/Light toggle (top-right).
+  Every theme-dependent token has a light counterpart in the
+  :root:has(#theme-light:checked) block (same hue, mirrored L). Dark is the
+  default. The adaptive accent needs BOTH a :root value and a light value.
+  The mini-phone SVGs are self-contained dark device illustrations and read
+  on either page surface, so they are not re-themed.
+
   MODULAR SECTIONS — render a section ONLY if the audit produced it.
   A single-screen audit may have no fork section and no per-screen grid;
   delete those <section> blocks. The visual system never changes.
+
+  FULL-REVIEW EXTRAS — two sections appear ONLY when this report is the
+  merged output of the /thumb-first umbrella (design pass + platform pass):
+    • "Fix order" (after the header) — interleaves design findings and
+      platform defects by user impact. Every row keeps a CLASS tag
+      (Design / Fork / Defect) so ordering never erases the channel.
+    • "Platform defects" (after the findings) — objective, file:line,
+      P0–P3, on the steel platform channel. For a NATIVE target this
+      section is replaced by a short handoff note (which native skill) or
+      an honest "native audits not covered". For a design-only audit
+      (/thumb-first-design) delete BOTH sections — the worked example
+      below keeps them as the full-review reference.
+
+  PLATFORM CHANNEL — --plat (steel, hue 220) is the technical instrument's
+  identity: it carries platform defects only (section marker, file:line, the
+  DEFECT class tag). The P0–P3 ramp shows severity within it via SQUARE mono
+  badges — deliberately not pills — so a defect can never be misread as a
+  design chip. Defect cards use a plain uniform border (NO colored left-rail
+  stripe — see banned patterns). Warm severity (crit/imp/pol) stays exclusive
+  to DESIGN findings. The two channels never share a shape.
 -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +68,7 @@
     --paper:      oklch(0.935 0.005 85);
     --paper-dim:  oklch(0.795 0.006 85);
     --muted:      oklch(0.675 0.008 85);
-    --faint:      oklch(0.500 0.008 85);
+    --faint:      oklch(0.605 0.008 85);
     --line:       oklch(0.95 0.01 85 / 0.09);
     --line-strong:oklch(0.95 0.01 85 / 0.16);
 
@@ -70,6 +97,16 @@
     --concern: var(--imp);
     --problem: var(--crit);
 
+    /* ——— Platform-defect channel (FIXED — full-review only) ———
+       Steel = the technical instrument's identity. The P0–P3 ramp is
+       severity WITHIN it. Never used for design findings. */
+    --plat:      oklch(0.70 0.10 220);
+    --plat-tint: oklch(0.70 0.10 220 / 0.14);
+    --p0: oklch(0.64 0.20 25);   --p0-tint: oklch(0.64 0.20 25 / 0.16);
+    --p1: oklch(0.72 0.16 55);   --p1-tint: oklch(0.72 0.16 55 / 0.16);
+    --p2: oklch(0.82 0.13 90);   --p2-tint: oklch(0.82 0.13 90 / 0.16);
+    --p3: oklch(0.70 0.045 235); --p3-tint: oklch(0.70 0.045 235 / 0.16);
+
     /* ——— Spacing (4pt scale, semantic) ——— */
     --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
     --s6:32px; --s7:48px; --s8:64px; --s9:96px;
@@ -79,6 +116,52 @@
     --sans: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     --mono: "Spline Sans Mono", ui-monospace, "SF Mono", Menlo, monospace;
   }
+
+  /* ═══════════════ LIGHT-MODE OVERRIDES ═══════════════
+     Activated by the global Dark/Light toggle. Every theme-dependent token
+     gets a light counterpart — same hue, mirrored L — so the report reads
+     cleanly on light backgrounds while keeping the warm-graphite identity.
+     :has() is Baseline 2023 (all modern browsers). The verdict aliases
+     (--strong/--concern/--problem) follow automatically via var(). */
+  :root:has(#theme-light:checked) {
+    /* Identity — warm chalk page, graphite ink */
+    --ink:        oklch(0.985 0.003 75);
+    --surface:    oklch(0.967 0.004 75);
+    --surface-2:  oklch(0.945 0.005 75);
+    --paper:      oklch(0.190 0.006 85);
+    --paper-dim:  oklch(0.355 0.008 85);
+    --muted:      oklch(0.470 0.010 85);
+    --faint:      oklch(0.540 0.009 85);
+    --line:       oklch(0.20 0.010 85 / 0.12);
+    --line-strong:oklch(0.20 0.010 85 / 0.22);
+
+    /* Adaptive accent — light counterpart of the SAMPLED brand color.
+       When you re-sample --accent for an audit, set BOTH the :root (dark)
+       trio above AND this light trio. Worked example = Skillet terracotta. */
+    --accent:      oklch(0.555 0.135 45);
+    --accent-soft: oklch(0.510 0.120 50);
+    --accent-tint: oklch(0.62 0.155 52 / 0.16);
+
+    /* Severity — same hues, deeper L for contrast on light */
+    --crit:      oklch(0.555 0.195 25);  --crit-tint: oklch(0.555 0.195 25 / 0.12);
+    --imp:       oklch(0.580 0.150 78);  --imp-tint:  oklch(0.580 0.150 78 / 0.14);
+    --pol:       oklch(0.500 0.055 245); --pol-tint:  oklch(0.500 0.055 245 / 0.14);
+
+    /* Reach-cost ramp — deepened */
+    --reach-low:  oklch(0.555 0.140 152);
+    --reach-med:  oklch(0.580 0.150 78);
+    --reach-high: oklch(0.555 0.195 25);
+
+    /* Platform-defect channel — deepened */
+    --plat:      oklch(0.500 0.105 220); --plat-tint: oklch(0.500 0.105 220 / 0.14);
+    --p0: oklch(0.530 0.210 25);  --p0-tint: oklch(0.530 0.210 25 / 0.14);
+    --p1: oklch(0.560 0.160 55);  --p1-tint: oklch(0.560 0.160 55 / 0.14);
+    --p2: oklch(0.560 0.150 90);  --p2-tint: oklch(0.560 0.150 90 / 0.15);
+    --p3: oklch(0.500 0.050 235); --p3-tint: oklch(0.500 0.050 235 / 0.14);
+  }
+  /* Hover tints invert for light mode (the dark-mode rules use a white wash) */
+  :root:has(#theme-light:checked) .lens-table tbody tr:hover,
+  :root:has(#theme-light:checked) .fixorder li:hover { background: rgba(0,0,0,0.035); }
 
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -93,6 +176,16 @@
   }
   ::selection { background: var(--accent-tint); }
   a { color: var(--accent-soft); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+
+  /* visually-hidden (theme radios) */
+  .vh { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+  /* ───────────── Global Dark/Light theme switch (pure CSS, top-right) ───────────── */
+  .theme-switch { display: flex; justify-content: flex-end; margin-bottom: var(--s5); }
+  .theme-switch__pill { display: inline-flex; align-items: center; border: 1px solid var(--line-strong); border-radius: 100px; overflow: hidden; }
+  .theme-switch__pill label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); padding: 6px 14px; cursor: pointer; user-select: none; transition: background 0.15s ease, color 0.15s ease; }
+  #theme-dark:checked  ~ .theme-switch__pill label[for="theme-dark"],
+  #theme-light:checked ~ .theme-switch__pill label[for="theme-light"] { background: var(--accent-tint); color: var(--accent-soft); }
 
   .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(40px, 6vw, 72px) clamp(20px, 5vw, 40px) 96px; }
 
@@ -131,6 +224,7 @@
   .stat.imp .num  { color: var(--imp); }
   .stat.pol .num  { color: var(--pol); }
   .stat.forks .num { color: var(--accent-soft); }
+  .stat .num.zero { color: var(--muted); }  /* a 0 count is good news — show it neutral, not in the alarm color */
   .stat .lbl { margin-top: var(--s2); }
 
   /* ───────────── Section scaffolding ───────────── */
@@ -190,7 +284,7 @@
   .screen-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: var(--s5) var(--s4) var(--s4); display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
   .screen-card svg { width: 96px; height: auto; align-self: center; }
   .screen-card .name { font-weight: 600; margin-top: var(--s4); font-size: 15px; }
-  .screen-card .read { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: var(--s1); }
+  .screen-card .read { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: var(--s1); min-height: 3.3em; }  /* reserve 2 lines so notes align across the row */
   .screen-card.good .read { color: var(--strong); }
   .screen-card.warn .read { color: var(--concern); }
   .screen-card.bad  .read { color: var(--problem); }
@@ -240,7 +334,7 @@
   .fork-tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
   .fork.recommended .fork-tag { color: var(--accent-soft); }
   .fork.current .fork-tag { color: var(--concern); }
-  .fork h4 { font-family: var(--display); font-size: 19px; font-weight: 600; letter-spacing: -0.01em; margin: var(--s3) 0 var(--s2); }
+  .fork h4 { font-family: var(--display); font-size: 19px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; margin: var(--s3) 0 var(--s2); min-height: 2.5em; }  /* reserve 2 lines so option cards align */
   .fork .summary { font-size: 13px; color: var(--muted); margin: 0 0 var(--s4); line-height: 1.5; }
   .fork-phone { margin: var(--s2) 0 var(--s5); align-self: center; }
   .fork ul { text-align: left; padding: 0; list-style: none; margin: 0; width: 100%; }
@@ -264,10 +358,47 @@
   .step { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: var(--s5); counter-increment: step; }
   .step .sn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--accent-soft); }
   .step .sn::before { content: counter(step, decimal-leading-zero) "  "; }
-  .step h4 { font-family: var(--display); font-size: 17px; font-weight: 600; margin: var(--s3) 0 var(--s2); }
+  .step h4 { font-family: var(--display); font-size: 17px; font-weight: 600; line-height: 1.25; margin: var(--s3) 0 var(--s2); min-height: 2.5em; }  /* reserve 2 lines so step bodies align across the row */
   .step p { margin: 0; color: var(--muted); font-size: 13.5px; }
 
   footer.doc { margin-top: var(--s8); padding-top: var(--s5); border-top: 1px solid var(--line); font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--s3); }
+
+  /* ───────────── Fix order (FULL-REVIEW ONLY) ─────────────
+     Interleaves design findings + platform defects by user impact.
+     Each row carries its CLASS tag so the channel survives the sort. */
+  .fixorder { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .fixorder li { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2) var(--s4); padding: var(--s4) var(--s5); border-bottom: 1px solid var(--line); }
+  .fixorder li:last-child { border-bottom: none; }
+  .fixorder li:hover { background: rgba(255,255,255,0.018); }
+  .fo-rank { width: 18px; flex-shrink: 0; font-family: var(--mono); font-size: 13px; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .fo-class { flex-shrink: 0; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 3px 8px; border-radius: 5px; }
+  .fo-class.design { background: var(--accent-tint); color: var(--accent-soft); }
+  .fo-class.fork   { background: transparent; color: var(--muted); border: 1px solid var(--line-strong); }
+  .fo-class.defect { background: var(--plat-tint); color: var(--plat); }
+  .fo-text { flex: 1; min-width: 55%; color: var(--paper); }
+  .fo-text .src { display: block; margin-top: 2px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .fo-sev { flex-shrink: 0; margin-left: auto; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
+
+  /* ───────────── Platform defects (FULL-REVIEW ONLY) ─────────────
+     Steel channel + SQUARE mono P0–P3 badges + file:line. Never pills. */
+  .tier-label.plat .mono-label { color: var(--plat); }
+  .defects { display: flex; flex-direction: column; gap: var(--s4); }
+  /* article.defect (not bare .defect) so the card styling never leaks onto the
+     fix-order's <span class="fo-class defect"> chip. No left-stripe — severity
+     is carried by the square P-badge; the banned-patterns rule forbids stripes. */
+  article.defect { display: grid; grid-template-columns: var(--find-rail) 1fr; column-gap: var(--s5); row-gap: var(--s3); align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: clamp(20px, 2.6vw, 26px); }
+  .pbadge { grid-column: 1; grid-row: 1; width: var(--find-rail); height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
+  .pbadge.p0 { background: var(--p0-tint); color: var(--p0); }
+  .pbadge.p1 { background: var(--p1-tint); color: var(--p1); }
+  .pbadge.p2 { background: var(--p2-tint); color: var(--p2); }
+  .pbadge.p3 { background: var(--p3-tint); color: var(--p3); }
+  .defect-head { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: var(--s1); }
+  .defect-loc { font-family: var(--mono); font-size: 11.5px; color: var(--plat); }
+  .defect-title { font-family: var(--display); font-size: clamp(17px, 2.2vw, 20px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.25; color: var(--paper); margin: 2px 0 0; }
+  .defect-body { grid-column: 2; grid-row: 2; display: grid; gap: var(--s3); }
+  .defect-body p { margin: 0; color: var(--paper-dim); }
+  .defect-body .label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); display: block; margin-bottom: 3px; }
+  .defect-body code, .defect-loc code { font-family: var(--mono); font-size: 0.92em; }
 
   /* ───────────── Narrow screens ───────────── */
   @media (max-width: 600px) {
@@ -284,6 +415,13 @@
     .lens-table td { padding: 0; border: none; }
     .lens-table .lens-name { width: auto; margin-bottom: var(--s2); }
     .lens-table .verdict { margin-bottom: var(--s2); }
+
+    /* Platform defects collapse like findings — badge stacks above its content. */
+    article.defect { grid-template-columns: 1fr; row-gap: var(--s2); }
+    .pbadge, .defect-head, .defect-body { grid-column: 1; grid-row: auto; }
+    .pbadge { width: 44px; }
+    /* Fix order already wraps (flex); keep the severity from forcing a 3rd line. */
+    .fixorder .fo-sev { margin-left: 0; }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -294,9 +432,22 @@
 <body>
 <div class="wrap">
 
+  <!-- ═══════════ GLOBAL THEME TOGGLE ═══════════
+       Pure CSS. Dark is default-checked. The light-mode tokens live in the
+       :root:has(#theme-light:checked) block. Must be the FIRST child of .wrap
+       so the sibling-combinator selectors on the pill resolve. -->
+  <div class="theme-switch" role="radiogroup" aria-label="Report theme">
+    <input class="vh" type="radio" name="theme" id="theme-dark" checked>
+    <input class="vh" type="radio" name="theme" id="theme-light">
+    <div class="theme-switch__pill">
+      <label for="theme-dark">Dark</label>
+      <label for="theme-light">Light</label>
+    </div>
+  </div>
+
   <!-- ═══════════ HEADER ═══════════ -->
   <header class="doc">
-    <div class="eyebrow">Mobile design audit · thumb-first</div>
+    <div class="eyebrow">Mobile review · thumb-first</div>
     <h1 class="title">Skillet — what's working, what to revisit</h1>
     <p class="lede">
       A walk through Home, Chat, Pantry, Recipe and Scan with eight designer lenses — findings ordered by
@@ -312,8 +463,24 @@
       <div class="stat imp"><div class="num">4</div><div class="mono-label lbl">Important</div></div>
       <div class="stat pol"><div class="num">2</div><div class="mono-label lbl">Polish</div></div>
       <div class="stat forks"><div class="num">4</div><div class="mono-label lbl">Silent forks</div></div>
+      <div class="stat"><div class="num" style="color:var(--plat)">3</div><div class="mono-label lbl">Platform defects</div></div>
     </div>
   </header>
+
+  <!-- ═══════════ FIX ORDER ═══════════ · full-review only (design + platform merged); delete for a design-only audit -->
+  <section style="margin-bottom: var(--s8);">
+    <div class="mono-label" style="color: var(--accent-soft);">Fix order · what to do first</div>
+    <h2 class="section-title">Both passes, one priority list</h2>
+    <p class="section-sub">Design findings and platform defects interleaved by what a real user hits first. The <em>class</em> tag keeps the channel visible — an opinion never hides as a bug, a bug never hides as an opinion.</p>
+    <ul class="fixorder">
+      <li><span class="fo-rank">1</span><span class="fo-class defect">Defect</span><span class="fo-text">viewport-fit=cover missing — safe-area insets resolve to 0; content under the notch / home indicator<span class="src">platform · app/layout.tsx:18</span></span><span class="fo-sev">P0</span></li>
+      <li><span class="fo-rank">2</span><span class="fo-class design">Design</span><span class="fo-text">Hamburger drawer is the wrong primary nav; Chat has no visible entry<span class="src">design · Rausch · findings 01–02</span></span><span class="fo-sev">Critical</span></li>
+      <li><span class="fo-rank">3</span><span class="fo-class defect">Defect</span><span class="fo-text">100vh on the Home shell overflows under mobile Safari's toolbar<span class="src">platform · app/(home)/layout.tsx:11</span></span><span class="fo-sev">P1</span></li>
+      <li><span class="fo-rank">4</span><span class="fo-class design">Design</span><span class="fo-text">"Add to pantry" sits in the top-right Ow zone — frequent action, hardest reach<span class="src">design · Hoober · Hurff · finding 03</span></span><span class="fo-sev">Important</span></li>
+      <li><span class="fo-rank">5</span><span class="fo-class fork">Fork</span><span class="fo-text">Tab bar vs. conversational shell — pick the navigation model deliberately<span class="src">design · Rausch · §05</span></span><span class="fo-sev">Decision</span></li>
+      <li><span class="fo-rank">6</span><span class="fo-class defect">Defect</span><span class="fo-text">No touch-action on the quick-add control — 300ms tap delay on the most-tapped button<span class="src">platform · components/PantryQuickAdd.tsx:42</span></span><span class="fo-sev">P2</span></li>
+    </ul>
+  </section>
 
   <!-- ═══════════ 01 · LENS SUMMARY ═══════════ -->
   <section>
@@ -623,6 +790,50 @@
     </div>
   </section>
 
+  <!-- ═══════════ PLATFORM DEFECTS ═══════════ · full-review only; web/PWA target.
+       Native target → replace this whole section with a handoff note (which native skill) or an honest "native audits not covered". Design-only audit → delete it. -->
+  <section>
+    <div class="sec-index" style="color: var(--plat);">P</div>
+    <h2 class="section-title">Platform defects</h2>
+    <p class="section-sub">Objective implementation issues on the device — each with a location and a fix. Distinct from the design findings above: <em>these are bugs, not decisions.</em> Verified against a web/PWA target.</p>
+    <div class="tier-label plat"><span class="mono-label">Technical · web / PWA</span><span class="rule"></span><span class="count">3</span></div>
+    <div class="defects">
+      <article class="defect" data-p="p0">
+        <span class="pbadge p0">P0</span>
+        <div class="defect-head">
+          <span class="defect-loc">app/layout.tsx:18 · &lt;meta name="viewport"&gt;</span>
+          <h3 class="defect-title">viewport-fit=cover missing — safe-area insets never apply</h3>
+        </div>
+        <div class="defect-body">
+          <p><span class="label">What</span>Without <code>viewport-fit=cover</code>, <code>env(safe-area-inset-*)</code> resolves to 0. Content renders under the notch and home indicator on iOS.</p>
+          <div class="fix"><p><span class="label">Fix</span><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"&gt;</code>, then pad chrome with <code>max(1rem, env(safe-area-inset-bottom))</code>.</p></div>
+        </div>
+      </article>
+      <article class="defect" data-p="p1">
+        <span class="pbadge p1">P1</span>
+        <div class="defect-head">
+          <span class="defect-loc">app/(home)/layout.tsx:11</span>
+          <h3 class="defect-title">100vh on the Home shell overflows under the mobile toolbar</h3>
+        </div>
+        <div class="defect-body">
+          <p><span class="label">What</span><code>height: 100vh</code> includes mobile Safari's dynamic toolbar, pushing the bottom action band off-screen.</p>
+          <div class="fix"><p><span class="label">Fix</span>Use <code>100svh</code> for the static shell; reserve <code>dvh</code> for elements meant to resize with the toolbar.</p></div>
+        </div>
+      </article>
+      <article class="defect" data-p="p2">
+        <span class="pbadge p2">P2</span>
+        <div class="defect-head">
+          <span class="defect-loc">components/PantryQuickAdd.tsx:42</span>
+          <h3 class="defect-title">300ms tap delay on the quick-add control</h3>
+        </div>
+        <div class="defect-body">
+          <p><span class="label">What</span>No <code>touch-action</code> on the most-tapped button means a 300ms delay on every add — felt as lag.</p>
+          <div class="fix"><p><span class="label">Fix</span><code>button, a { touch-action: manipulation; }</code>; confirm the control is also ≥44pt.</p></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
   <!-- ═══════════ 05 · THE BIG FORK ═══════════ -->
   <section>
     <div class="sec-index">05</div>
@@ -717,8 +928,8 @@
   </section>
 
   <footer class="doc">
-    <span>Skillet mobile design audit · thumb-first</span>
-    <span>8 findings · 2 critical · 4 important · 2 polish</span>
+    <span>Skillet mobile review · thumb-first</span>
+    <span>8 design findings · 4 forks · 3 platform defects · merged fix-order</span>
   </footer>
 
 </div>

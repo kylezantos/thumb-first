@@ -1,19 +1,19 @@
 ---
-name: thumb-first
-description: "Mobile design judgment — the decision layer for designing mobile UX, platform-agnostic across web and native. Two modes: plan a feature's mobile design before code, or audit an existing mobile design. Thinks in named designer lenses (Hoober, Hurff, Wroblewski, Clark, Rausch, Budiu, Allen, de With, Nelson) with context-aware weighting, and surfaces decision forks where there's no single right answer. Use when designing or reviewing mobile interfaces, choosing navigation patterns (tab bar, drawer, bottom sheet), placing actions for thumb reach, designing mobile forms, deciding gestures vs visible controls, or when the user mentions mobile design, mobile UX, thumb zones, one-handed use, bottom sheets, mobile navigation, or touch targets."
+name: thumb-first-design
+description: "The design-judgment layer of the thumb-first mobile suite — decides WHAT the right mobile pattern is and WHY, platform-agnostic across web and native. Reasons through named designer lenses (Hoober, Hurff, Wroblewski, Clark, Rausch, Budiu, Allen, de With, Nelson) with context-aware weighting, and surfaces decision forks where there's no single right answer. Two modes: plan a feature's mobile design before code, or audit an existing one. Use for navigation-pattern choices (tab bar, drawer, bottom sheet), thumb-reach and action placement, mobile forms, gestures vs visible controls, and mobile design critique — or when the user mentions mobile design, mobile UX, thumb zones, one-handed use, bottom sheets, or mobile navigation. Usually run via the /thumb-first umbrella (which also runs platform checks); invoke directly for design judgment only. For web/PWA technical defects use thumb-first-platform."
 argument-hint: "[plan|audit]"
 ---
 
-# Thumb-First
+# Thumb-First · Design
 
-Mobile design judgment — *what* the right mobile pattern is and *why*, not how to code it. The decisions hold whether the implementation is CSS, SwiftUI, or React Native.
+Mobile design judgment — *what* the right mobile pattern is and *why*, not how to code it. The decisions hold whether the implementation is CSS, SwiftUI, or React Native. This is the **design-judgment layer** of the thumb-first suite.
 
 ## Quick Start
 
-**Plan a feature's mobile design:** `/thumb-first plan` or "design the mobile UX for this" or "how should this work on mobile"
-**Audit an existing mobile design:** `/thumb-first audit` or "review this mobile screen" or "is this good mobile design"
+**Plan a feature's mobile design:** `/thumb-first-design plan` or "design the mobile UX for this" or "how should this work on mobile"
+**Audit an existing mobile design:** `/thumb-first-design audit` or "review this mobile screen" or "is this good mobile design"
 
-This skill decides patterns and ergonomics. It does not write the implementation — for responsive CSS use `responsive-craft`; for mobile-web/PWA rendering use `mobile-design-audit`; for React Native/Expo use the native-mobile skills.
+This skill decides patterns and ergonomics; it does not write the implementation — for responsive CSS use `responsive-craft`; for mobile-web/PWA technical defects (safe areas, viewport, service workers) use its sibling `thumb-first-platform`; for React Native/Expo use the native-mobile skills. For a single combined pass that runs this judgment audit **and** the platform audit and merges them into one report, run `/thumb-first`.
 
 ---
 

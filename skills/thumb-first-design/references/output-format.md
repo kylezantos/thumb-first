@@ -48,6 +48,15 @@ Guards:
 - **Sampled color collides with severity red** (a red/orange brand) → that's acceptable, because the accent only appears as brand chrome in different regions than severity badges. If it reads confusingly in practice, desaturate the accent (lower chroma) or sample the product's secondary color instead. Severity tokens never move.
 - Keep accent chroma moderate. A neon accent on dark is the AI-slop tell the identity is built to avoid.
 
+### Dual theme (light / dark)
+
+The report ships a pure-CSS **Dark / Light** toggle — a segmented pill, top-right, the first child of `.wrap`. Dark is the default. Every theme-dependent token has a light counterpart in the `:root:has(#theme-light:checked)` block (same hue, mirrored lightness), so the whole report re-tones on toggle with no JS. `:has()` is Baseline 2023 (all modern browsers).
+
+- **Keep the toggle markup** — the two `.vh` radios (`#theme-dark` default-checked, `#theme-light`) plus `.theme-switch__pill` — as the first element inside `.wrap`. The sibling-combinator selectors that highlight the active label won't resolve if it moves.
+- **When you re-sample the adaptive accent, set it in BOTH places**: the `:root` (dark) trio and the `:root:has(#theme-light:checked)` (light) trio. The light accent should be deeper (lower L) so it stays legible as chrome on the chalk surface.
+- **Token values are tuned for contrast in both modes** — body and labels clear WCAG AA on their surface in dark *and* light; `--faint` is the floor at ~4.9:1. If you re-tune any token, keep small text ≥ 4.5:1 on its surface in both themes.
+- The mini-phone, fork, and thumb-zone SVGs are self-contained dark device illustrations that read on either page surface, so they are intentionally **not** re-themed.
+
 ### The thumb-zone diagram — keep the pattern
 
 The diagram is the signature element and the thing most likely to break if rebuilt freehand. The template's pattern is collision-proof — **do not** put long text labels inside the SVG:
@@ -74,6 +83,8 @@ The visual system is fixed; the sections are not. Delete any `<section>` the aud
 | 06 Other forks | Step 4, remaining silent forks | none surfaced |
 | 07 Limits | Step 5 "what I couldn't assess" | never — honesty about limits is required |
 | 08 Next steps | Step 6 hand-offs | never |
+
+**Full-review-only sections.** The template also ships two sections used only when this report is the merged output of the `/thumb-first` umbrella: a **Fix order** lead (after the header) and a **Platform defects** section (after the findings, on the steel `--plat` channel). A standalone `/thumb-first-design` audit **deletes both** — they belong to the platform pass. Leave the warm design-severity channel untouched; the steel platform channel and P0–P3 ramp are not yours to populate in a design-only run. The head comment in the template documents this.
 
 ### Findings — severity tiers, no stripes
 

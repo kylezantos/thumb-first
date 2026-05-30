@@ -124,7 +124,7 @@ Order findings by **user impact**: Critical (blocks or badly degrades the primar
 
 After the user has read the findings, offer:
 - **Re-plan a problem area** — switch to the Plan workflow for a screen that needs rethinking.
-- **Hand off the fixes** — name the implementation skill (`responsive-craft`, `mobile-design-audit`, or the RN/Expo skills). thumb-first identifies the design changes; it doesn't write the implementation.
+- **Hand off the fixes** — name the implementation skill (`responsive-craft`, the sibling `thumb-first-platform` for web/PWA technical defects, or the RN/Expo skills). thumb-first-design identifies the design changes; it doesn't write the implementation.
 
 ---
 
